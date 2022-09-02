@@ -1,0 +1,4 @@
+include README.md
+recursive-include octoprint_majigfirealarm/templates *
+recursive-include octoprint_majigfirealarm/translations *
+recursive-include octoprint_majigfirealarm/static *
