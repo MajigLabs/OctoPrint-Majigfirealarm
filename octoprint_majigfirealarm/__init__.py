@@ -22,7 +22,8 @@ class MajigfirealarmPlugin(
 				print(advertisement_data.manufacturer_data.get(741))
 				self.status = advertisement_data.manufacturer_data.get(741)
 				if self.status == "FIRE":
-					self._printer.commands(self.emergencyGCODE)
+					self._logger.info("Attempting to emergency stop printer")
+					self._printer.commands(self.emergencyGCODE, force=True)
 				#print(advertisement_data.local_name)
 
 		async def main(self):
