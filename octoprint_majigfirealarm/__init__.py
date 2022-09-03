@@ -21,6 +21,8 @@ class MajigfirealarmPlugin(
 			if advertisement_data.local_name == "MAJIG":
 				print(advertisement_data.manufacturer_data.get(741))
 				self.status = advertisement_data.manufacturer_data.get(741)
+				if self.status == "FIRE":
+					self._printer.commands(self.emergencyGCODE)
 				#print(advertisement_data.local_name)
 
 		async def main(self):
@@ -35,6 +37,8 @@ class MajigfirealarmPlugin(
 				self._logger.info("Hello from Majig Firealarm Plugin!")
 				self.searching = False
 				self.status = 'empty'
+				# Thank you too: https://github.com/Sebclem/OctoPrint-SimpleEmergencyStop
+				self.emergencyGCODE = "M112"
 
 		def get_template_configs(self):
 				return [
