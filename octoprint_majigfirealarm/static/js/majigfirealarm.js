@@ -5,7 +5,7 @@ $(function() {
         self.alarmStatus = ko.observable();
 
         self.fromResponse = function(response){
-            if (rense.status === "FIRE"){
+            if (response.status === "FIRE"){
                 //debugger;
                 self.sendStop();
                 //alert("testing attempting to do firealarm stop");
