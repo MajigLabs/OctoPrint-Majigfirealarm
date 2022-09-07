@@ -5,9 +5,10 @@ $(function() {
         self.alarmStatus = ko.observable();
 
         self.fromResponse = function(response){
-            if (response.status === "FIRE"){
-                self.getStatus();
-                alert("testing attempting to do firealarm stop");
+            if (rense.status === "FIRE"){
+                //debugger;
+                self.sendStop();
+                //alert("testing attempting to do firealarm stop");
             }
             $("#majigfirealarm-span").text(response.status);
         };

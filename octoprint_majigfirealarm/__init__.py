@@ -45,9 +45,10 @@ class MajigfirealarmPlugin(
 						
 		
 		def on_api_command(self, command, data):
+			self._logger.info("Majig Firealarm - attempting to shutoff printer")
 			emergencyStop = "M25 ;:M84 X Y Z E ;:M106 S0 ;:M104 S0 ;:M140 S0 ;"
 			for MCode in emergencyStop.split(":"):
-				self._printer.commands(str(MCode))
+				self._printer.commands(MCode)
 			
 		def on_api_get(self, request):
 				try:
