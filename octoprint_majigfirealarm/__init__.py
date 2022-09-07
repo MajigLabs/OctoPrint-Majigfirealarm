@@ -37,18 +37,29 @@ class MajigfirealarmPlugin(
 				self.status = 'empty'
 				# Thank you too: https://github.com/Sebclem/OctoPrint-SimpleEmergencyStop
 				self.emergencyGCODE = "M112"
+				self.codeSent = False
 
 		def get_template_configs(self):
 				return [
 						dict(type="sidebar", icon="fire", custom_bindings=True, template="majigfirealarm_sidebar.jinja2")
 				]
 						
-		
+		def get_api_commands(self):
+			return dict(
+				emergencyStop=[]
+			)
+
 		def on_api_command(self, command, data):
-			self._logger.info("Majig Firealarm - attempting to shutoff printer")
-			emergencyStop = "M25 ;:M84 X Y Z E ;:M106 S0 ;:M104 S0 ;:M140 S0 ;"
-			for MCode in emergencyStop.split(":"):
-				self._printer.commands(MCode)
+			#print('hello from fire alarm')
+			if self.codeSent == False:
+				self.codeSent = True
+				self._logger.info("Majig Firealarm - attempting to shutoff printer")
+				emergencyStop = "M25 ;:M84 X Y Z E ;:M106 S0 ;:M104 S0 ;:M140 S0 ;"
+				for MCode in emergencyStop.split(":"):
+					self._printer.commands(MCode)
+				#self._printer.commands("M112")
+			
+			return flask.jsonify(status='sent')
 			
 		def on_api_get(self, request):
 				try:
