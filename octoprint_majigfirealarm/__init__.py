@@ -6,10 +6,6 @@ import asyncio
 from bleak import BleakScanner
 import flask
 
-
-
-
-
 class MajigfirealarmPlugin(
 		octoprint.plugin.StartupPlugin,
 		octoprint.plugin.TemplatePlugin,
@@ -21,10 +17,10 @@ class MajigfirealarmPlugin(
 			if advertisement_data.local_name == "MAJIG":
 				print(advertisement_data.manufacturer_data.get(741))
 				self.status = advertisement_data.manufacturer_data.get(741)
-				if self.status == "FIRE":
-					self._logger.info("Attempting to emergency stop printer")
+				#if self.status == "FIRE":
+				#	self._logger.info("Attempting to emergency stop printer")
 					#self._printer.commands(self.emergencyGCODE, force=True)
-					self._printer.commands("M112", force=True)
+				#	self._printer.commands("M112", force=True)
 				#print(advertisement_data.local_name)
 
 		async def main(self):
@@ -47,6 +43,12 @@ class MajigfirealarmPlugin(
 						dict(type="sidebar", icon="fire", custom_bindings=True, template="majigfirealarm_sidebar.jinja2")
 				]
 						
+		
+		def on_api_command(self, command, data):
+			emergencyStop = "M25 ;:M84 X Y Z E ;:M106 S0 ;:M104 S0 ;:M140 S0 ;"
+			for MCode in emergencyStop.split(":"):
+				self._printer.commands(str(MCode))
+			
 		def on_api_get(self, request):
 				try:
 					loop = asyncio.get_running_loop()

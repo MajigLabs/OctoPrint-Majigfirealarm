@@ -5,6 +5,10 @@ $(function() {
         self.alarmStatus = ko.observable();
 
         self.fromResponse = function(response){
+            if (response.status === "FIRE"){
+                self.getStatus();
+                alert("testing attempting to do firealarm stop");
+            }
             $("#majigfirealarm-span").text(response.status);
         };
 
@@ -16,6 +20,21 @@ $(function() {
                 success: self.fromResponse
             });	
         };
+
+        self.sendStop = function(){
+            $.ajax({
+                url: API_BASEURL + "plugin/majigfirealarm",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({
+                    command: "emergencyStop"
+                }),
+                contentType: "application/json; charset=UTF-8",
+                success: function (data, status) {
+                    alert('Fire alarm! Shutting off machine')
+                }
+            });
+        }
 
         self.timeout = null;
 
